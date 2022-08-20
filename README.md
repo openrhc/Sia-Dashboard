@@ -7,14 +7,36 @@ A Simple Linux Monitoring Dashboard.
 ## Installation
 
 ```bash
-wget -O /usr/local/bin/sia-dashboard $release_url
-chmod +x /usr/local/bin/sia-dashboard
+wget $release_url
+gzip -d sia-dashboard.gz
+chmod +x sia-dashboard
+mv sia-dashboard /usr/local/bin/
 ```
 
 ## Usage
 
 ```bash
-sia-dashboard -p 8000
+sia-dashboard -h
+```
+
+## Systemd
+
+```
+/etc/systemd/system/sia-dashboard.service
+[Unit]
+Description=Sia-Dashboard Daemon
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/sia-dashboard
+Restart=on-failure
+RestartSec=5s
+StandardOutput=append:/dev/null
+StandardError=append:/dev/null
+
+[Install]
+WantedBy=multi-user.target
 ```
 
 ## Compilation
