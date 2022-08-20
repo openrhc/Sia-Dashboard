@@ -1,0 +1,11 @@
+Inter-|   Receive                                                |  Transmit
+ face |bytes    packets errs drop fifo frame compressed multicast|bytes    packets errs drop fifo colls carrier compressed
+    lo:    2524      34    0    0    0     0          0         0     2524      34    0    0    0     0       0          0
+  sit0:       0       0    0    0    0     0          0         0        0       0    0    0    0     0       0          0
+  eth0: 6158828761 5938321    0 84191    0     0          0         0 6068115979 5991580    0    0    0     0       0          0
+ wlan0:       0       0    0    0    0     0          0         0        0       0    0    0    0     0       0          0
+docker0: 10599102   39178    0    0    0     0          0         0 16989360   34747    0    0    0     0       0          0
+veth99560ef:   43337     442    0    0    0     0          0         0   259165     390    0    0    0     0       0          0
+veth9f93f67: 11104257   38736    0    0    0     0          0         0 16730447   34363    0    0    0     0       0          0
+  utun: 345101970  471859    0    0    0     0          0         0 345121335  471912    0    0    0     0       0          0
+ redir: 5132551937  907169    0    0    0     0          0         0 228005876 1003887    0    0    0     0       0          0
