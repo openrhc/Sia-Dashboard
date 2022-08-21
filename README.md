@@ -17,6 +17,15 @@ mv sia-dashboard /usr/local/bin/
 
 ```bash
 sia-dashboard -h
+
+Usage of sia-dashboard:
+  -a string
+        address (default "0.0.0.0")
+  -p string
+        port (default "8000")
+
+Sia-Dashboard openrhc-20220820. Custom go1.19 linux/arm64
+A Simple Linux Monitoring Dashboard.
 ```
 
 ## Systemd
