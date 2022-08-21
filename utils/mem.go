@@ -35,27 +35,21 @@ func GetMemInfo() (mem MemInfo) {
 		if c == io.EOF {
 			break
 		}
-		str := string(line)
-		str = strings.Replace(str, "kB", "", 1)
-		arr := strings.Split(str, ":")
-		if len(arr) == 2 {
-			number, err := strconv.Atoi(strings.Trim(arr[1], " "))
-			if err == nil {
-				switch arr[0] {
-				case "MemTotal":
-					mem.MemTotal = number
-				case "Shmem":
-					mem.Shmem = number
-				case "MemFree":
-					mem.MemFree = number
-				case "Buffers":
-					mem.Buffers = number
-				case "Cached":
-					mem.Cached = number
-				case "SReclaimable":
-					mem.SReclaimable = number
-				}
-			}
+		fields := strings.Fields(string(line))
+		number, _ := strconv.Atoi(fields[1])
+		switch fields[0] {
+		case "MemTotal:":
+			mem.MemTotal = number
+		case "Shmem:":
+			mem.Shmem = number
+		case "MemFree:":
+			mem.MemFree = number
+		case "Buffers:":
+			mem.Buffers = number
+		case "Cached:":
+			mem.Cached = number
+		case "SReclaimable:":
+			mem.SReclaimable = number
 		}
 	}
 	return mem

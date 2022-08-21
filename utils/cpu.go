@@ -35,15 +35,15 @@ func GetCpuInfo() CpuInfo {
 	cpu := CpuInfo{
 		Os:    runtime.GOOS,
 		Arch:  runtime.GOARCH,
-		Temp:  GetCpuTemp(),
-		Model: GetCpuModel(),
-		Times: GetCpuTimes(),
+		Temp:  getCpuTemp(),
+		Model: getCpuModel(),
+		Times: getCpuTimes(),
 	}
 	return cpu
 }
 
 // 获取cpu温度
-func GetCpuTemp() (temp float64) {
+func getCpuTemp() (temp float64) {
 	path := "/sys/class/thermal/thermal_zone0/temp"
 	if runtime.GOOS != "linux" {
 		path = "./data/temp.txt"
@@ -52,8 +52,7 @@ func GetCpuTemp() (temp float64) {
 	if err != nil {
 		return 0
 	}
-	tempStr := string(file)
-	tempStr = strings.Trim(tempStr, "\n")
+	tempStr := strings.Trim(string(file), "\n")
 	temp, err = strconv.ParseFloat(tempStr, 64)
 	if err != nil {
 		fmt.Println(err.Error())
@@ -64,7 +63,7 @@ func GetCpuTemp() (temp float64) {
 }
 
 // 获取cpu型号 数量
-func GetCpuModel() (model CpuModel) {
+func getCpuModel() (model CpuModel) {
 	model = CpuModel{Name: "Unknow", Count: 0, Features: ""}
 	path := "/proc/cpuinfo"
 	if runtime.GOOS != "linux" {
@@ -101,7 +100,7 @@ func GetCpuModel() (model CpuModel) {
 	return model
 }
 
-func GetCpuTimes() (stat []CpuTimes) {
+func getCpuTimes() (stat []CpuTimes) {
 	path := "/proc/stat"
 	if runtime.GOOS != "linux" {
 		path = "./data/stat.txt"

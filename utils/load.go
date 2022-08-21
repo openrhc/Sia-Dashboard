@@ -22,11 +22,10 @@ func GetLoadAvg() (loadavg LoadAvgInfo) {
 	if err != nil {
 		return loadavg
 	}
-	str := strings.Trim(string(file), "\n")
-	arr := strings.Split(str, " ")
-	load1, _ := strconv.ParseFloat(arr[0], 64)
-	load5, _ := strconv.ParseFloat(arr[1], 64)
-	load15, _ := strconv.ParseFloat(arr[2], 64)
+	fields := strings.Fields(strings.Trim(string(file), "\n"))
+	load1, _ := strconv.ParseFloat(fields[0], 64)
+	load5, _ := strconv.ParseFloat(fields[1], 64)
+	load15, _ := strconv.ParseFloat(fields[2], 64)
 	loadavg = LoadAvgInfo{
 		Load1:  load1,
 		Load5:  load5,

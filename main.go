@@ -18,6 +18,7 @@ type Status struct {
 	Mem     utils.MemInfo
 	Net     []utils.NetInfo
 	Loadavg utils.LoadAvgInfo
+	Process []utils.Process
 }
 
 //go:embed static/*
@@ -30,7 +31,7 @@ var Version string
 func main() {
 	if len(os.Args) > 1 && os.Args[1] == "-v" {
 		version := fmt.Sprintf(
-			"Sia-Dashboard %s. Custom %s %s/%s\n%s",
+			"Sia-Dashboard %s (Custom %s %s/%s)\n%s",
 			Version, runtime.Version(), runtime.GOOS, runtime.GOARCH,
 			"A Simple Linux Monitoring Dashboard.",
 		)
@@ -43,6 +44,7 @@ func main() {
 	http.HandleFunc("/mem", handleMemInfo)
 	http.HandleFunc("/net", handleNetInfo)
 	http.HandleFunc("/loadavg", handleLoadavgInfo)
+	http.HandleFunc("/process", handleProcessList)
 	http.HandleFunc("/status", handleAllInfo)
 	println("System Info Api running @ http://" + *ADDR + ":" + *PORT)
 	err := http.ListenAndServe(*ADDR+":"+*PORT, nil)
@@ -113,6 +115,13 @@ func handleLoadavgInfo(w http.ResponseWriter, r *http.Request) {
 	w.Write(b)
 }
 
+func handleProcessList(w http.ResponseWriter, r *http.Request) {
+	Preprocessing(w, r)
+	process := utils.GetProcessList()
+	b, _ := json.Marshal(process)
+	w.Write(b)
+}
+
 func handleAllInfo(w http.ResponseWriter, r *http.Request) {
 	Preprocessing(w, r)
 	status := Status{
@@ -120,6 +129,7 @@ func handleAllInfo(w http.ResponseWriter, r *http.Request) {
 		Mem:     utils.GetMemInfo(),
 		Net:     utils.GetNetInfo(),
 		Loadavg: utils.GetLoadAvg(),
+		Process: utils.GetProcessList(),
 	}
 	b, _ := json.Marshal(status)
 	w.Write(b)

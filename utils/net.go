@@ -24,22 +24,15 @@ type NetInfo struct {
 }
 
 func getLineInfo(str string) (net NetInfo) {
-	arr1 := strings.Split(strings.Trim(str, " "), ":")
-	arr2 := strings.Split(arr1[1], " ")
-	var arr3 []string
-	for _, item := range arr2 {
-		if item != "" {
-			arr3 = append(arr3, item)
-		}
-	}
-	rBytes, _ := strconv.Atoi(arr3[0])
-	rPackets, _ := strconv.Atoi(arr3[1])
-	rDrop, _ := strconv.Atoi(arr3[3])
-	tBytes, _ := strconv.Atoi(arr3[8])
-	tPackets, _ := strconv.Atoi(arr3[9])
-	tDrop, _ := strconv.Atoi(arr3[11])
+	fields := strings.Fields(str)
+	rBytes, _ := strconv.Atoi(fields[1])
+	rPackets, _ := strconv.Atoi(fields[2])
+	rDrop, _ := strconv.Atoi(fields[4])
+	tBytes, _ := strconv.Atoi(fields[9])
+	tPackets, _ := strconv.Atoi(fields[10])
+	tDrop, _ := strconv.Atoi(fields[12])
 	net = NetInfo{
-		Name: arr1[0],
+		Name: strings.Replace(fields[0], ":", "", 1),
 		Traffic: Traffic{
 			Receive: TrafficItem{
 				Bytes:   rBytes,
@@ -67,8 +60,7 @@ func GetNetInfo() (nets []NetInfo) {
 	}
 	lines := strings.Split(strings.Trim(string(file), "\n"), "\n")
 	for i := 2; i < len(lines); i++ {
-		line := lines[i]
-		nets = append(nets, getLineInfo(line))
+		nets = append(nets, getLineInfo(lines[i]))
 	}
 	return nets
 }
